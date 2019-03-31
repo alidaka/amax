@@ -1,0 +1,8 @@
+[package]
+name = "amax"
+version = "0.1.0"
+authors = ["alidaka <alidaka@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+iron = "0.6.*"
