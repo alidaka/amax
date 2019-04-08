@@ -5,4 +5,6 @@ authors = ["alidaka <alidaka@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-iron = "0.6.*"
+ws = "*"
+serde_json = "1.0"
+serde = { version = "1.0", features = ["derive"] }
