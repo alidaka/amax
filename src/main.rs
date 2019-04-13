@@ -23,8 +23,8 @@ struct Server {
 
 impl Handler for Server {
     fn on_message(&mut self, msg: Message) -> Result<()> {
-        fn serde_to_ws(err: serde_json::error::Error) -> Result<Request> {
-            Err(ws::Error::new(ws::ErrorKind::Custom(Box::new(err)), ""))
+        fn serde_to_ws<T>(err: serde_json::error::Error) -> Result<T> {
+            Err(ws::Error::new(ws::ErrorKind::Custom(Box::new(err)), "JSON encoding/decoding error"))
         };
 
         match &msg {
@@ -44,7 +44,7 @@ impl Handler for Server {
                 serde_json::to_string(&Response::Error {
                     reason: "expected text, got binary".to_owned(),
                 })
-                .or_else(|err| Err(ws::Error::new(ws::ErrorKind::Custom(Box::new(err)), "")))?,
+                .or_else(&serde_to_ws)?,
             ),
         }
     }
