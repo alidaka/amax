@@ -4,4 +4,4 @@ push:
 	git push && git push github
 
 run:
-	cargo run
+	foreman start

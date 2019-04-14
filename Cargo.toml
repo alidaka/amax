@@ -8,3 +8,7 @@ edition = "2018"
 ws = "*"
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
+
+[[bin]]
+name = "amax"
+path = "backend/main.rs"
