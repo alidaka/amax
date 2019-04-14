@@ -6,10 +6,8 @@ import Html.Attributes exposing (placeholder, value)
 import Html.Events exposing (onSubmit, onInput)
 import Json.Encode as JE
 
--- JavaScript usage: app.ports.websocketIn.send(response);
-port websocketIn : (String -> msg) -> Sub msg
--- JavaScript usage: app.ports.websocketOut.subscribe(handler);
-port websocketOut : String -> Cmd msg
+port fromSocket : (String -> msg) -> Sub msg
+port toSocket : String -> Cmd msg
 
 main = Browser.element
     { init = init
@@ -48,7 +46,7 @@ update msg model =
       )
     Submit value ->
       ( model
-      , websocketOut value
+      , toSocket value
       )
     WebsocketIn value ->
       ( { model | responses = value :: model.responses }
@@ -59,7 +57,7 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    websocketIn WebsocketIn
+    fromSocket WebsocketIn
 
 {- VIEW -}
 

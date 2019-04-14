@@ -10,10 +10,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   socket.addEventListener('message', function(event) {
     console.log('message from server: ', event.data);
-    app.ports.websocketIn.send(event.data);
+    app.ports.fromSocket.send(event.data);
   });
 
-  app.ports.websocketOut.subscribe(function(str) {
+  app.ports.toSocket.subscribe(function(str) {
     console.log("got from Elm:", str);
     socket.send(str);
   });
