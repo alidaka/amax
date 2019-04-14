@@ -70,7 +70,7 @@ impl Handler for Server {
 }
 
 fn main() {
-    listen("0.0.0.0:3000", |out| Server { out: out }).unwrap();
+    listen("0.0.0.0:3001", |out| Server { out: out }).unwrap();
 
     println!("We're up");
 }

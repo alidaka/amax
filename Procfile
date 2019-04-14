@@ -1,2 +1,2 @@
 backend: cd backend && cargo run
-frontend: cd frontend && elm reactor
+frontend: cd frontend && yarn client
