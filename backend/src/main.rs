@@ -21,32 +21,42 @@ struct Server {
     out: Sender,
 }
 
+fn handle_request(request: Request) -> Response {
+    match request {
+        Request::Ping { message: _ } => Response::Success {
+            message: "pong".to_owned(),
+        },
+        Request::Pong { number } => {
+            let mut text = "ding dong\n".to_owned();
+            for _ in 1..(number) {
+                text.push_str("ding dong\n");
+            }
+            Response::Success { message: text }
+        }
+    }
+}
+
+fn serde_to_ws<T>(err: serde_json::error::Error) -> Result<T> {
+    Err(ws::Error::new(
+        ws::ErrorKind::Custom(Box::new(err)),
+        "JSON encoding/decoding error",
+    ))
+}
+
 impl Handler for Server {
     fn on_message(&mut self, msg: Message) -> Result<()> {
-        fn serde_to_ws<T>(err: serde_json::error::Error) -> Result<T> {
-            Err(ws::Error::new(ws::ErrorKind::Custom(Box::new(err)), "JSON encoding/decoding error"))
+        let response = match &msg {
+            Message::Text(text) => {
+                let request = serde_json::from_str(&text).or_else(&serde_to_ws)?;
+                handle_request(request)
+            }
+            _ => Response::Error {
+                reason: "expected text, got binary".to_owned(),
+            },
         };
 
-        match &msg {
-            Message::Text(text) => {
-                let r = serde_json::from_str(&text).or_else(&serde_to_ws)?;
-                match &r {
-                    Request::Ping { message: _ } => self.out.send("pong"),
-                    Request::Pong { number } => {
-                        for _ in 1..(*number) {
-                            self.out.send("ding dong")?;
-                        }
-                        self.out.send("ding dong")
-                    }
-                }
-            }
-            _ => self.out.send(
-                serde_json::to_string(&Response::Error {
-                    reason: "expected text, got binary".to_owned(),
-                })
-                .or_else(&serde_to_ws)?,
-            ),
-        }
+        self.out
+            .send(serde_json::to_string(&response).or_else(&serde_to_ws)?)
     }
 
     fn on_close(&mut self, code: CloseCode, reason: &str) {
