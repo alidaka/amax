@@ -1,3 +1,9 @@
+# Quickstart
+```
+make install
+make run
+```
+
 # to do
 - sign in
 - create event

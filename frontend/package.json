@@ -9,6 +9,7 @@
   },
   "scripts": {
     "build": "webpack --config webpack.config.js",
+    "clean": "rm -rf dist/ elm-stuff/ node_modules/",
     "client": "webpack-dev-server --config webpack.config.js --port 3000"
   }
 }
