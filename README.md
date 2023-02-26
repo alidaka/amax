@@ -44,8 +44,7 @@ Webpack
 
 ### Development
 ```
-> npm install
-> npm run dev
+> foreman start
 ```
 
 ### Deployment

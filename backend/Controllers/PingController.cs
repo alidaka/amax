@@ -13,9 +13,19 @@ public class PingController : ControllerBase
         _logger = logger;
     }
 
+    // TODO: make this a hook
+    public interface Response { }
+    public record Success(object data) : Response;
+    public record Error(Exception error) : Response;
+
     [HttpGet("ping/{word?}")]
-    public string Ping(string word = "pong")
+    public Response Ping(string word)
     {
-        return word;
+        if (string.IsNullOrEmpty(word))
+        {
+            return new Success("pong");
+        }
+
+        return new Success(new string(word.Reverse().ToArray()));
     }
 }
