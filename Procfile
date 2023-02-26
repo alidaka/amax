@@ -1,2 +1,2 @@
-backend: cd backend && cargo run
-frontend: cd frontend && yarn client
+backend: cd backend && dotnet run
+frontend: cd frontend && npm run dev
