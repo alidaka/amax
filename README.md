@@ -44,6 +44,13 @@ Webpack
 
 ### Development
 ```
+> dotnet new tool-manifest
+> dotnet tool install dotnet-ef
+
+> brew install postgresql
+> /usr/local/opt/postgresql@14/bin/createuser -s postgres
+> brew install pgadmin4 --cask
+
 > foreman start
 ```
 
